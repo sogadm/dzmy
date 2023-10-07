@@ -1,0 +1,63 @@
+body {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+height: 100vh;
+margin: 0;
+background: #f8f5d7;
+font-family: Arial, sans-serif;
+font-size: 24px;
+font-weight: bold;
+-webkit-user-select:none;
+-moz-user-select:none;
+-ms-user-select:none;
+user-select:none;
+touch-action: none;
+background-attachment: fixed;
+}
+#muyu {
+width: 250px;
+height: 250px;
+margin: 20px;
+background: url('./muyu.png') no-repeat;
+background-size: contain;
+border-radius: 50%;
+line-height: 250px;
+text-align: center;
+cursor: pointer;
+position: relative;
+}
+#count {
+font-size: 24px;
+}
+#autoPlayBtn {
+margin: 20px;
+transform: scale(2.5); /* This will increase the size of the button by 2.5 times */
+outline: none;
+background-color: #DDDDDD;
+color: #000000;
+}
+#autoPlayContainer {
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.merit {
+position: absolute;
+animation: float 2s ease-out;
+font-size: 35px;
+color: #f00;
+top: -125px;
+left: 50%;
+transform: translateX(-50%);
+}
+@keyframes float {
+0% { opacity: 1; transform: translateY(0) translateX(-50%); }
+100% { opacity: 0; transform: translateY(-50px) translateX(-50%); }
+}
+.footer {
+color: gray;
+font-size: 13px;
+text-decoration: none;
+}

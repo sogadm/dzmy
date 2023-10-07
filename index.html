@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<link href="./style.css" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>电子木鱼——自动功德机</title>
+</head>
+<body>
+<audio id="audio" src="muyu.mp3"></audio>
+<div id="muyu" onclick="playSound()"></div>
+<div id="count">功德量: 0</div>
+<div id="autoPlayContainer">
+<button id="autoPlayBtn" onclick="autoPlay()">自动</button>
+</div>
+</br></br>
+<footer align="center" class="footer">&copy;<script>document.write(new Date().getFullYear());</script> sogadm</footer>
+<script>
+var targetProtocol = "https:";
+if (window.location.protocol != targetProtocol)
+window.location.href = targetProtocol +
+window.location.href.substring(window.location.protocol.length);
+var audio = document.getElementById('audio');
+var count = localStorage.getItem('count') ? parseInt(localStorage.getItem('count')) : 0;
+document.getElementById('count').innerText = '功德量: ' + count;
+var autoPlayInterval;
+var worker = new Worker('worker.js');
+worker.onmessage = function(e) {
+  playSound();
+};
+function playSound() {
+var audio = new Audio('muyu.mp3');
+audio.play();
+count++;
+localStorage.setItem('count', count);
+document.getElementById('count').innerText = '功德量: ' + count;
+var merit = document.createElement('div');
+merit.className = 'merit';
+merit.innerText = '功德+1';
+document.getElementById('muyu').appendChild(merit);
+setTimeout(function() {
+document.getElementById('muyu').removeChild(merit);
+}, 2000);
+}
+function autoPlay() {
+// 解锁iOS设备上的音频播放
+var unlockAudio = new Audio('muyu.mp3');
+unlockAudio.muted = true;
+unlockAudio.play();
+if (autoPlayInterval) {
+clearInterval(autoPlayInterval);
+autoPlayInterval = null;
+} else {
+autoPlayInterval = setInterval(function() {
+  worker.postMessage('play');
+}, 1000);
+}
+audio.oncanplaythrough = function() {
+if (document.getElementById('autoPlayBtn').checked) {
+autoPlay();
+}
+};
+audio.load();
+}
+window.onload = function() {
+  var count = localStorage.getItem('count') ? parseInt(localStorage.getItem('count')) : 0;
+  document.getElementById('count').innerText = '功德量: ' + count;
+}
+</script>
+</body>
+</html>
